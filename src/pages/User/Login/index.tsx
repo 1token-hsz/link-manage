@@ -1,16 +1,13 @@
 import { login } from '@/services/ant-design-pro/api';
 import {
-  AlipayCircleOutlined,
   LockOutlined,
-  TaobaoCircleOutlined,
   UserOutlined,
-  WeiboCircleOutlined,
 } from '@ant-design/icons';
 import {
   LoginForm,
   ProFormText,
 } from '@ant-design/pro-components';
-import { FormattedMessage, history, SelectLang, useIntl, useModel, Helmet } from '@umijs/max';
+import { FormattedMessage, history, useIntl, useModel, Helmet } from '@umijs/max';
 import { Alert, message, Tabs } from 'antd';
 import Settings from '../../../../config/defaultSettings';
 import React, { useState } from 'react';
@@ -53,27 +50,6 @@ const useStyles = createStyles(({ token }) => {
   };
 });
 
-const ActionIcons = () => {
-  const { styles } = useStyles();
-
-  return (
-    <>
-      <AlipayCircleOutlined key="AlipayCircleOutlined" className={styles.action} />
-      <TaobaoCircleOutlined key="TaobaoCircleOutlined" className={styles.action} />
-      <WeiboCircleOutlined key="WeiboCircleOutlined" className={styles.action} />
-    </>
-  );
-};
-
-const Lang = () => {
-  const { styles } = useStyles();
-
-  return (
-    <div className={styles.lang} data-lang>
-      {SelectLang && <SelectLang />}
-    </div>
-  );
-};
 
 const LoginMessage: React.FC<{
   content: string;
