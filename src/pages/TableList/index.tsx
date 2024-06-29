@@ -1,6 +1,9 @@
 import { addRule, removeRule, rule, updateRule } from '@/services/ant-design-pro/api';
 import { PlusOutlined } from '@ant-design/icons';
 import type { ActionType, ProColumns, ProDescriptionsItemProps } from '@ant-design/pro-components';
+import RcResizeObserver from 'rc-resize-observer';
+import { Column } from '@ant-design/plots';
+
 import {
   ModalForm,
   PageContainer,
@@ -14,6 +17,56 @@ import { Button, Drawer, message } from 'antd';
 import React, { useRef, useState } from 'react';
 import type { FormValueType } from './components/UpdateForm';
 import UpdateForm from './components/UpdateForm';
+
+const DemoColumn = () => {
+  const config = {
+    data: {
+      type: 'fetch',
+      value: 'http://moonquake.online/api/v1/url_config/stat/53.json', // 'https://gw.alipayobjects.com/os/antfincdn/iPY8JFnxdb/dodge-padding.json',
+    },
+    xField: 'date',
+    yField: 'count',
+    colorField: 'name',
+    width:750,
+    stack: true,
+    interaction: {
+      tooltip: {
+        render: (e, { title, items }) => {
+          return (
+            <div key={title}>
+              <h4>{title}</h4>
+              {items.map((item) => {
+                const { name, value, color } = item;
+                return (
+                  <div>
+                    <div style={{ margin: 0, display: 'flex', justifyContent: 'space-between' }}>
+                      <div>
+                        <span
+                          style={{
+                            display: 'inline-block',
+                            width: 6,
+                            height: 6,
+                            borderRadius: '50%',
+                            backgroundColor: color,
+                            marginRight: 6,
+                          }}
+                        ></span>
+                        <span>{name}</span>
+                      </div>
+                      <b>{value}</b>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          );
+        },
+      },
+    },
+  };
+  return <Column {...config} />;
+};
+
 
 /**
  * @en-US Add node
@@ -99,6 +152,8 @@ const TableList: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const [currentRow, setCurrentRow] = useState<API.RuleListItem>();
   const [] = useState<API.RuleListItem[]>([]);
+
+  const [responsive, setResponsive] = useState(false);
 
   /**
    * @en-US International configuration
@@ -298,7 +353,7 @@ const TableList: React.FC = () => {
       />
 
       <Drawer
-        width={600}
+        width={800}
         open={showDetail}
         onClose={() => {
           setCurrentRow(undefined);
@@ -306,6 +361,7 @@ const TableList: React.FC = () => {
         }}
         closable={false}
       >
+
         {currentRow?.name && (
           <ProDescriptions<API.RuleListItem>
             column={2}
@@ -319,6 +375,15 @@ const TableList: React.FC = () => {
             columns={columns as ProDescriptionsItemProps<API.RuleListItem>[]}
           />
         )}
+        <RcResizeObserver
+          key="resize-observer"
+          onResize={(offset) => {
+            setResponsive(offset.width < 596);
+          }}
+        >
+          <DemoColumn />
+        </RcResizeObserver>
+
       </Drawer>
     </PageContainer>
   );
