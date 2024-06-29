@@ -18,11 +18,12 @@ import React, { useRef, useState } from 'react';
 import type { FormValueType } from './components/UpdateForm';
 import UpdateForm from './components/UpdateForm';
 
-const DemoColumn = () => {
+const DemoColumn = (id) => {
   const config = {
+    // 获取当前row的id
     data: {
       type: 'fetch',
-      value: 'http://moonquake.online/api/v1/url_config/stat/53.json', // 'https://gw.alipayobjects.com/os/antfincdn/iPY8JFnxdb/dodge-padding.json',
+      value: 'http://moonquake.online/api/v1/url_config/stat/' + id.id + '.json', // 'https://gw.alipayobjects.com/os/antfincdn/iPY8JFnxdb/dodge-padding.json',
     },
     xField: 'date',
     yField: 'count',
@@ -381,7 +382,11 @@ const TableList: React.FC = () => {
             setResponsive(offset.width < 596);
           }}
         >
-          <DemoColumn />
+          {currentRow?.id && (
+            <DemoColumn<API.RuleListItem>
+              id={currentRow?.id}
+            />
+          )}
         </RcResizeObserver>
 
       </Drawer>
